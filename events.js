@@ -13,7 +13,7 @@ var create_player_objects = function(players,salaries){
         } else {
             var indexOf$ = salaries.indexOf("$", salary_playerIndex);
             specific_salary = salaries.substring(indexOf$ + 1, salaries.indexOf('\t', indexOf$));
-            specific_salary = "$" + specific_salary;
+            specific_salary = parseInt(specific_salary.replace(/,/,''));
 
             player_objects.push(
                 {   player: specific_player[1],
