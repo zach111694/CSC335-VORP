@@ -426,7 +426,7 @@
 426.	Hernan Perez	DET	3B	AL	2015	24	34	0.55%	.061	.088	.061	1	0	-0.197	-6.7	-6.7	.039	-0.75
 427.	Kyle Parker	COL	LF	NL	2015	25	112	1.84%	.179	.223	.311	1	0	-0.066	-7.4	-7.4	.172	-0.88
 428.	Taylor Featherston	ANA	3B	AL	2015	25	169	2.82%	.162	.212	.247	4	2	-0.047	-7.9	-7.9	.177	-0.80
-===================================================================================================================================================================
+=======================================================================================================================================
 Clayton Kershaw	Dodgers	Starting pitcher	$32,571,429	27	NL West 	National League 	California
 Justin Verlander	Tigers	Starting pitcher	$28,000,000	32	AL Central 	American League 	Michigan
 Josh Hamilton	Angels	Left field	$25,400,000	32	AL West 	American League 	California
