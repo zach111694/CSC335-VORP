@@ -1,18 +1,8 @@
 var computeButton = document.getElementById("computeButton");
 
-// Below are the array indices of significant data from the website containing each player's vorp after splitting the string:
-// Player = 1, Position = 3, VORP = 16
-
-computeButton.addEventListener("click", function() {
-    var data = (document.getElementById("player-data").value);
-    var dataPool = data.split(/=+/);
-    var players = dataPool[0].split('\n');
-
-    var salaries = dataPool[1];
-
-    var player_object = {};
-    var player_count = 0;
-    var test_alert_string = "";
+/*** FUNCTION THAT RETURNS AN ARRAY OF PLAYER OBJECTS ***/
+var create_player_objects = function(players,salaries){
+    var player_objects = [];
 
     for(var i = 0; i < players.length;i++){
         var specific_player = players[i].split('\t');
@@ -20,35 +10,43 @@ computeButton.addEventListener("click", function() {
         var salary_playerIndex = salaries.indexOf(specific_player[1]);
         if (salary_playerIndex === -1){
             specific_salary = "No Salary Listed";
-        }
-        else {
+        } else {
             var indexOf$ = salaries.indexOf("$", salary_playerIndex);
             specific_salary = salaries.substring(indexOf$ + 1, salaries.indexOf('\t', indexOf$));
             specific_salary = "$" + specific_salary;
 
-            player_object[specific_player[1]] = {
-                vorp: specific_player[16],
-                position: specific_player[3],
-                salary: specific_salary
-            };
-        }
-
-
-        if(specific_salary[0] === "$"){
-            player_count += 1;
-            test_alert_string += (
-                specific_player[1] + ':    ' +
-                "VORP = " + specific_player[16] + '    ' +
-                "Position = " + specific_player[3]+ '    ' +
-                "Salary = " + specific_salary + '\n'
+            player_objects.push(
+                {   player: specific_player[1],
+                    vorp: specific_player[16],
+                    position: specific_player[3],
+                    salary: specific_salary
+                }
             );
         }
     }
+    return player_objects;
+};
+
+/*** MAIN FUNCTION ***/
+computeButton.addEventListener("click", function() {
+
+    // STORE TEXT INPUT AS STRING IN A VARIABLE
+    var data = (document.getElementById("player-data").value);
+
+    // DIVIDE STRING VARIABLE AT "===" USING REGEX, AND STORE RESULTS IN AN ARRAY
+    var dataPool = data.split(/=+/);
+
+    // STORE DATA CONTAINING VORP IN VAR; TAKEN FROM INDEX '0' OF DATA POOL ARRAY
+    var data_with_vorp = dataPool[0].split('\n');
+
+    // STORE DATA CONTAINING SALARIES IN VAR; TAKEN FROM  INDEX '1' OF DATA POOL ARRAY
+    var data_with_salaries = dataPool[1];
+
+    // STORE RETURNED ARRAY OF OBJECTS FROM FUNCTION IN VARIABLE
+    var player_objects = create_player_objects(data_with_vorp,data_with_salaries);
 
     /* Test alert function with JSON object inside param */
-    // alert(JSON.stringify(player_object));
-    /* Test alert function with string inside param */
-    alert(test_alert_string + "\n" + player_count + " players total");
+    alert(JSON.stringify(player_objects));
 
 });
 
