@@ -54,19 +54,16 @@ var create_position_object = function(player_objects){
         var vorpArray = [];
         for (var k in base){
             vorpArray.push(base[k].vorp);
-            //console.log(base[k]);
+            
 
         }
-        //console.log(playerName);
+        
         console.log(vorpArray);
 
         var maxVorpPerBase = Math.max.apply(null, vorpArray);
         console.log(maxVorpPerBase);
         maxVorpSoFar += maxVorpPerBase;
 
-
-        //maxVorpSoFar += Math.max(vorpObject);
-        //console.log(vorpObject);
     }
     return maxVorpSoFar;
     //console.log(player_positions);
