@@ -44,20 +44,21 @@ var create_position_object = function(player_objects){
             salary: player.salary
         };
     }
+    return player_positions;
+};
 
-    //return player_positions ;
+var max_vorp = function(positions,budget){
+
     var maxVorpSoFar = 0;
 
-
-    for (var j in player_positions){
-        var base = player_positions[j];
+    for (var j in positions){
+        var base = positions[j];
         var vorpArray = [];
         for (var k in base){
             vorpArray.push(base[k].vorp);
-            
 
         }
-        
+
         console.log(vorpArray);
 
         var maxVorpPerBase = Math.max.apply(null, vorpArray);
@@ -67,11 +68,6 @@ var create_position_object = function(player_objects){
     }
     return maxVorpSoFar;
     //console.log(player_positions);
-
-
-
-
-
 
 };
 
@@ -91,11 +87,25 @@ computeButton.addEventListener("click", function() {
     var data_with_salaries = dataPool[1];
 
     // STORE RETURNED ARRAY OF OBJECTS FROM FUNCTION IN VARIABLE
-    var player_objects = create_player_objects(data_with_vorp,data_with_salaries);
-    var position_objects = create_position_object(player_objects);
+    var players = create_player_objects(data_with_vorp,data_with_salaries);
+    var positions = create_position_object(players);
+    var test_object = {
+        "3B": {
+            "Matt Duffy": {"vorp": 3, "salary": 509000},
+            "Jake Lamb": {"vorp": 10, "salary": 508500}
+        },
+        "CF": {
+            "Joc Pederson": {"vorp": 3, "salary": 507500},
+            "Odubel Herrera": {"vorp": 30, "salary": 507500}
+        }
+    };
+
+    var team = max_vorp(test_object);
+
     /* Test alert function with JSON object inside param */
-    //alert(JSON.stringify(player_objects));
-    alert(JSON.stringify(position_objects));
+    alert(JSON.stringify(test_object));
+    alert(team);
+
 
 
 });
