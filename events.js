@@ -47,27 +47,41 @@ var create_position_object = function(player_objects){
     return player_positions;
 };
 
-var max_vorp = function(positions,budget){
+var max_vorp = function(positions,budget,n){
 
-    var maxVorpSoFar = 0;
-
-    for (var j in positions){
-        var base = positions[j];
-        var vorpArray = [];
-        for (var k in base){
-            vorpArray.push(base[k].vorp);
-
-        }
-
-        console.log(vorpArray);
-
-        var maxVorpPerBase = Math.max.apply(null, vorpArray);
-        console.log(maxVorpPerBase);
-        maxVorpSoFar += maxVorpPerBase;
-
+    if(n > positions.length){
+        return "TEST";
     }
-    return maxVorpSoFar;
-    //console.log(player_positions);
+
+    var team = [];
+    var max_vorp_so_far = 0;
+
+    for(var player in positions[n]) {
+        if (player.salary < budget && player.vorp > max_vorp_so_far) {
+            max_vorp_so_far = player.vorp;
+            var new_budget = budget - player.salary;
+
+            team.push([player, player.vorp, player.salary, positions[n]] + max_vorp(positions, new_budget, n + 1));
+        }
+    }
+
+    return team;
+
+        //team.push(["\n" + maxVorpInPosition,j,playerWithMaxVorp,playerSalary] + max_vorp(new_positions,budget - playerSalary));
+
+        //var maxVorpInPosition = 0;
+        //var playerWithMaxVorp = "";
+        //var playerSalary = 0;
+        //var playerPosition = "";
+        //
+        //for (var k in base){
+        //    if(base[k].vorp > maxVorpInPosition){
+        //        maxVorpInPosition = base[k].vorp;
+        //        playerWithMaxVorp = k;
+        //        playerSalary = base[k].salary;
+        //        playerPosition = j;
+        //    }
+        //}
 
 };
 
@@ -91,19 +105,19 @@ computeButton.addEventListener("click", function() {
     var positions = create_position_object(players);
     var test_object = {
         "3B": {
-            "Matt Duffy": {"vorp": 3, "salary": 509000},
-            "Jake Lamb": {"vorp": 10, "salary": 508500}
+            "Matt Duffy": {"vorp": 3, "salary": 400},
+            "Jake Lamb": {"vorp": 10, "salary": 200}
         },
         "CF": {
-            "Joc Pederson": {"vorp": 3, "salary": 507500},
-            "Odubel Herrera": {"vorp": 30, "salary": 507500}
+            "Joc Pederson": {"vorp": 3, "salary": 600},
+            "Odubel Herrera": {"vorp": -1, "salary": 200}
         }
     };
 
-    var team = max_vorp(test_object);
+    var team = max_vorp(Object.keys(test_object),1000,0);
 
     /* Test alert function with JSON object inside param */
-    alert(JSON.stringify(test_object));
+    alert(Object.keys(test_object));
     alert(team);
 
 
