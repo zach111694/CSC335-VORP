@@ -47,11 +47,17 @@ var create_position_object = function(player_objects){
     return player_positions;
 };
 
-var max_vorp = function(positions,budget){
+var vorp_algorithm = function(positions,budget){
 
     if(Object.keys(positions).length === 0){
         return 0;
     }
+
+    var output = {
+        total_vorp: 0,
+        money_spent: 0,
+        team: []
+    };
 
     var positions_keys = Object.keys(positions); //[3B,CF]
     var first_position = positions_keys[0]; // [3B]
@@ -63,25 +69,23 @@ var max_vorp = function(positions,budget){
 
     delete positions_copy[first_position];
 
-    var max_vorp_so_far = max_vorp(positions_copy,budget);
+    var max_vorp = vorp_algorithm(positions_copy,budget);
 
     for(var i in positions[first_position]) {
         var player = positions[first_position][i];
 
-
         if((player.salary) <= budget){
             var new_budget = budget - player.salary;
-            var player_vorp = player.vorp;
-            player_vorp =  player_vorp + max_vorp(positions_copy,new_budget);
+            var max_vorp_so_far =  player.vorp + vorp_algorithm(positions_copy,new_budget);
         }
 
-        if(player_vorp > max_vorp_so_far){
-            max_vorp_so_far = player_vorp;
+        if(max_vorp_so_far > max_vorp){
+            max_vorp = max_vorp_so_far;
         }
     }
 
-    return max_vorp_so_far;
 
+    return output;
 };
 
 /*** MAIN FUNCTION ***/
@@ -113,11 +117,11 @@ computeButton.addEventListener("click", function() {
         }
     };
 
-    var team = max_vorp(test_object,1000);
+    var team = vorp_algorithm(test_object,1000);
 
     /* Test alert function with JSON object inside param */
     //alert(Object.keys(test_object));
-    alert(team);
+    alert(JSON.stringify(team));
 
 
 
