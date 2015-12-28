@@ -13,7 +13,7 @@ var create_player_objects = function(players,salaries){
         } else {
             var indexOf$ = salaries.indexOf("$", salary_playerIndex);
             specific_salary = salaries.substring(indexOf$ + 1, salaries.indexOf('\t', indexOf$));
-            specific_salary = parseInt(specific_salary.replace(/,/,''));
+            specific_salary = parseInt(specific_salary.replace(/,/g,''));
 
             player_objects[specific_player[1]] =
             {
@@ -76,12 +76,13 @@ var vorp_algorithm = function(positions,budget){
                 var new_budget = budget - player.salary;
                 var max_vorp_so_far = vorp_algorithm(positions_copy,new_budget);
                 max_vorp_so_far.total_vorp += player.vorp;
-                max_vorp_so_far.players[i] = player;
-
+                max_vorp_so_far.players[first_position] = i;
+                max_vorp_so_far.money_spent += player.salary;
 
                 if(max_vorp_so_far.total_vorp > output.total_vorp){
                     output.total_vorp = max_vorp_so_far.total_vorp;
                     output.players = max_vorp_so_far.players;
+                    output.money_spent = max_vorp_so_far.money_spent;
                 }
             }
         }
@@ -125,7 +126,6 @@ computeButton.addEventListener("click", function() {
     /* Test alert function with JSON object inside param */
     //alert(Object.keys(test_object));
     alert(JSON.stringify(team));
-
 
 
 });
