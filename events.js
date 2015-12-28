@@ -49,43 +49,46 @@ var create_position_object = function(player_objects){
 
 var vorp_algorithm = function(positions,budget){
 
-    if(Object.keys(positions).length === 0){
-        return 0;
-    }
-
     var output = {
         total_vorp: 0,
         money_spent: 0,
-        team: []
+        players: {}
     };
 
     var positions_keys = Object.keys(positions); //[3B,CF]
     var first_position = positions_keys[0]; // [3B]
-    var positions_copy = {};
 
-    for(var pos in positions){
-        positions_copy[pos] = positions[pos];
-    }
+    if(first_position){
+        var positions_copy = {};
 
-    delete positions_copy[first_position];
-
-    var max_vorp = vorp_algorithm(positions_copy,budget);
-
-    for(var i in positions[first_position]) {
-        var player = positions[first_position][i];
-
-        if((player.salary) <= budget){
-            var new_budget = budget - player.salary;
-            var max_vorp_so_far =  player.vorp + vorp_algorithm(positions_copy,new_budget);
+        for(var pos in positions){
+            positions_copy[pos] = positions[pos];
         }
 
-        if(max_vorp_so_far > max_vorp){
-            max_vorp = max_vorp_so_far;
+        delete positions_copy[first_position];
+
+        output = vorp_algorithm(positions_copy,budget);
+
+        for(var i in positions[first_position]) {
+            var player = positions[first_position][i];
+
+            if(player.salary <= budget){
+                var new_budget = budget - player.salary;
+                var max_vorp_so_far = vorp_algorithm(positions_copy,new_budget);
+                max_vorp_so_far.total_vorp += player.vorp;
+                max_vorp_so_far.players[i] = player;
+
+
+                if(max_vorp_so_far.total_vorp > output.total_vorp){
+                    output.total_vorp = max_vorp_so_far.total_vorp;
+                    output.players = max_vorp_so_far.players;
+                }
+            }
         }
     }
-
 
     return output;
+
 };
 
 /*** MAIN FUNCTION ***/
@@ -117,7 +120,7 @@ computeButton.addEventListener("click", function() {
         }
     };
 
-    var team = vorp_algorithm(test_object,1000);
+    var team = vorp_algorithm(positions,3000000);
 
     /* Test alert function with JSON object inside param */
     //alert(Object.keys(test_object));
