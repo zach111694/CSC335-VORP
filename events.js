@@ -47,13 +47,22 @@ var create_position_object = function(player_objects){
     return player_positions;
 };
 
+var memo = {};
 var vorp_algorithm = function(positions,budget){
+
+    var input_as_string = (String(positions) + String(budget));
+
+    if (input_as_string in memo) {
+        return memo[input_as_string];
+    }
 
     var output = {
         total_vorp: 0,
         money_spent: 0,
         players: {}
     };
+
+    memo[input_as_string] = output;
 
     var positions_keys = Object.keys(positions); //[3B,CF]
     var first_position = positions_keys[0]; // [3B]
@@ -87,6 +96,7 @@ var vorp_algorithm = function(positions,budget){
             }
         }
     }
+
 
     return output;
 
